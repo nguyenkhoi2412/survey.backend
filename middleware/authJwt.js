@@ -21,10 +21,10 @@ const verifyTokenJWT = (req, res, next) => {
         return catchError(error, res);
       }
 
-      if ((req.method === "DELETE" || req.method === "PUT") && decoded.data.role === "test") {
+      if ((req.method === "POST" || req.method === "DELETE" || req.method === "PUT") && decoded.data.role === "test") {
         return res
           .status(405) // 405 Method Not Allowed 
-          .send({ message: "Account test can not update/delete." });
+          .send({ message: "Account test can not insert/update/delete." });
       }
 
       req.data = decoded;
