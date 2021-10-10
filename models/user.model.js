@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import encryptHelper from "../utils/encrypt.helper.js";
+import { ROLE } from "../shared/enums.js";
 import { Helpers } from "../utils/helpers.js";
 import bcrypt from "bcrypt";
 
@@ -15,6 +16,14 @@ var userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
+      required: true,
+    },
+    role: {
+      type: String,
+      enum: {
+        values: [ROLE.ADMIN.name, ROLE.USER.name, ROLE.VISITOR.name],
+        message: "{VALUE} is not supported.",
+      },
       required: true,
     },
   },

@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler";
 import mongoose from "mongoose";
+import { ROLE } from "../shared/enums.js";
 import User from "../models/user.model.js";
 import { Helpers } from "../utils/helpers.js";
 import jwt from "jsonwebtoken";
@@ -115,11 +116,13 @@ export default {
   //saveUser function to save new user
   REGISTER_USER: asyncHandler(async (req, res) => {
     // Create an instance of model SomeModel
-    const { username, password } = req.body;
+    const { username, password, role } = req.body;
+
     var userData = new User({
       _id: Helpers.uuidv4(),
       username: username,
       password: password,
+      role: role === undefined ? ROLE.USER.name : role,
     });
 
     // await mongoose.connection

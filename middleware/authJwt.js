@@ -1,3 +1,4 @@
+import { ROLE } from "../shared/enums.js";
 import jwt from "jsonwebtoken";
 const { TokenExpiredError } = jwt;
 
@@ -21,10 +22,16 @@ const verifyTokenJWT = (req, res, next) => {
         return catchError(error, res);
       }
 
-      if ((req.method === "POST" || req.method === "DELETE" || req.method === "PUT") && decoded.data.role === "test") {
+      // check Method Not Allowed
+      const rolename = decoded.data.role;
+
+      const notAllowed =
+        ROLE[rolename.toUpperCase()].power.indexOf(req.method) === -1;
+
+      if (notAllowed) {
         return res
-          .status(405) // 405 Method Not Allowed 
-          .send({ message: "Account test can not insert/update/delete." });
+          .status(405) // 405 Method Not Allowed
+          .send({ message: "Method Not Allowed." });
       }
 
       req.data = decoded;
